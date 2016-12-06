@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import HomePage from './HomePage';
 import ArticlesPage from './ArticlesPage';
 import SingleArticlePage from './SingleArticlePage';
+import CreateArticlePage from './CreateArticlePage';
 
 class App extends Component {
   state = {
@@ -20,6 +21,10 @@ class App extends Component {
   renderRoute() {
     if (this.state.route === '/articles') {
       return <ArticlesPage />;
+    }
+
+    if (this.state.route === '/articles/new') {
+      return <CreateArticlePage />;
     }
 
     if (this.state.route.startsWith('/articles/')) {
