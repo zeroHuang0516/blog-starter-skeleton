@@ -4,7 +4,7 @@ import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
 
-import api from './api';
+import api from './src/api/';
 import config from './webpack.config';
 
 const port = process.env.PORT || 3000;

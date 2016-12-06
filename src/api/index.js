@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import { Article } from '../models/';
+
 const router = new Router();
 
 const users = [
@@ -7,7 +9,6 @@ const users = [
   { id: 2, avatar: 'https://defaulter.betterworks.com/?text=Amy&size=200&hex=0095f4&cloudflare.png', name: 'Amy', age: 18 },
 ];
 
-// Write your restful api here:
 router.get('/users', (req, res) => {
   res.json({ users });
 });
