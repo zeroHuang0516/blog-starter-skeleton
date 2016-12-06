@@ -1,11 +1,5 @@
 import mongoose from 'mongoose';
 
-import configFile from '../../config/config';
-
-const config = configFile[process.env.NODE_ENV];
-
-mongoose.connect(`mongodb://${config.host}/${config.database}`);
-
 const options = {
   timestamps: {
     createdAt: 'created_at',
