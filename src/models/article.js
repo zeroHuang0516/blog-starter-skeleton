@@ -4,18 +4,22 @@ import configFile from '../../config/config';
 
 const config = configFile[process.env.NODE_ENV];
 
-mongoose.connect(`mongodb://${config.host}/${config.database}`);
+mongoose.connect(`mongodb://${config.host}:${config.port}/${config.database}`);
+
+const options = {
+  timestamps: {
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+  },
+  collection: 'article', // rename the collection name
+};
 
 const articleSchema = mongoose.Schema({
   id: String,
   content: String,
-  author: String,
+  authorId: String,
   title: String,
-  tags: String,
-  crawled_at: Date,
-  updated_at: Date,
-});
+  tags: { type: [String], default: [] },
+}, options);
 
-const Article = mongoose.model('Article', articleSchema);
-
-export default Article;
+export const Article = mongoose.model('Article', articleSchema);
