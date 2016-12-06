@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 import HomePage from './HomePage';
-import UsersPage from './UsersPage';
-import SingleUserPage from './SingleUserPage';
+import ArticlesPage from './ArticlesPage';
+import SingleArticlePage from './SingleArticlePage';
 
 class App extends Component {
   state = {
@@ -18,35 +18,35 @@ class App extends Component {
   }
 
   renderRoute() {
-    if (this.state.route === '/users') {
-      return <UsersPage />;
+    if (this.state.route === '/articles') {
+      return <ArticlesPage />;
     }
 
-    if (this.state.route.startsWith('/users/')) {
-      const id = this.state.route.split('/users/')[1];
-      return <SingleUserPage id={id} />;
+    if (this.state.route.startsWith('/articles/')) {
+      const id = this.state.route.split('/articles/')[1];
+      return <SingleArticlePage id={id} />;
     }
 
     return <HomePage />;
   }
 
   renderBreadcrumb() {
-    if (this.state.route === '/users') {
+    if (this.state.route === '/articles') {
       return (
         <ol className="breadcrumb">
           <li><a href="#/">Home</a></li>
-          <li><a href="#/users">Users</a></li>
+          <li><a href="#/articles">Articles</a></li>
         </ol>
       );
     }
 
-    if (this.state.route.startsWith('/users/')) {
-      const id = this.state.route.split('/users/')[1];
+    if (this.state.route.startsWith('/articles/')) {
+      const id = this.state.route.split('/articles/')[1];
       return (
         <ol className="breadcrumb">
           <li><a href="#/">Home</a></li>
-          <li><a href="#/users">Users</a></li>
-          <li><a href={`#/users/${id}`}>{id}</a></li>
+          <li><a href="#/articles">Articles</a></li>
+          <li><a href={`#/articles/${id}`}>{id}</a></li>
         </ol>
       );
     }
@@ -64,14 +64,14 @@ class App extends Component {
         <nav className="navbar navbar-default navbar-static-top">
           <div className="container">
             <div className="navbar-header">
-              <a className="navbar-brand" href="#/">Web Seminar HW#7</a>
+              <a className="navbar-brand" href="#/">Web Seminar - Blog</a>
             </div>
             <ul className="nav navbar-nav">
               <li>
                 <a href="#/">Home</a>
               </li>
               <li>
-                <a href="#/users">Users</a>
+                <a href="#/articles">Articles</a>
               </li>
             </ul>
           </div>

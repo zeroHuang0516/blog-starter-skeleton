@@ -2,31 +2,31 @@ import 'isomorphic-fetch';
 import React, { Component } from 'react';
 
 
-class UsersPage extends Component {
+class ArticlesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
+      articles: [],
     };
   }
 
   componentDidMount() {
-    fetch('/api/users')
+    fetch('/api/articles')
       .then(res => res.json())
       .then(json => {
         this.setState({
-          users: json.users,
+          articles: json,
         });
       });
   }
 
-  renderUser() {
-    const { users } = this.state;
-    return users.map(user => (
+  renderArticles() {
+    const { articles } = this.state;
+    return articles.map(article => (
       <tr>
-        <th><a href={`#/users/${user.id}`}>{user.id}</a></th>
-        <td><a href={`#/users/${user.id}`}>{user.name}</a></td>
-        <td><a href={`#/users/${user.id}`}>{user.age}</a></td>
+        <td><a href={`#/articles/${article._id}`} key={article._id}>{article.title}</a></td>
+        <td><a href={`#/articles/${article._id}`} key={article._id}>{article.tags.join(', ')}</a></td>
+        <th><a href={`#/articles/${article._id}`} key={article._id}>{article.created_at}</a></th>
       </tr>
     ));
   }
@@ -39,13 +39,13 @@ class UsersPage extends Component {
             <table className="table table-hover">
               <thead>
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>Age</th>
+                  <th>Title</th>
+                  <th>Tags</th>
+                  <th>Created_at</th>
                 </tr>
               </thead>
               <tbody>
-                {this.renderUser()}
+                {this.renderArticles()}
               </tbody>
             </table>
           </div>
@@ -62,4 +62,4 @@ class UsersPage extends Component {
   }
 }
 
-export default UsersPage;
+export default ArticlesPage;

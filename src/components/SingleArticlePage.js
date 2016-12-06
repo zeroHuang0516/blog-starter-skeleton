@@ -1,67 +1,71 @@
 import 'isomorphic-fetch';
 import React, { Component, PropTypes } from 'react';
 
-class SingleUserPage extends Component {
+class SingleArticlePage extends Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
   };
   constructor(props) {
     super(props);
     this.state = {
-      user: {},
+      article: {},
     };
   }
 
   componentDidMount() {
     const id = this.props.id;
-    fetch(`/api/users/${id}`)
+    fetch(`/api/articles/${id}`)
       .then(res => res.json())
-      .then(user => {
+      .then(article => {
         this.setState({
-          user,
+          article,
         });
       });
   }
 
   componentDidUpdate() {
     const id = this.props.id;
-    fetch(`/api/users/${id}`)
+    fetch(`/api/articles/${id}`)
       .then(res => res.json())
-      .then(user => {
+      .then(article => {
         this.setState({
-          user,
+          article,
         });
       });
   }
 
   render() {
-    const { user } = this.state;
+    const { article } = this.state;
     return (
       <div className="container omg">
         <div className="row">
           <div className="col-md-12">
             <div className="page-header">
-              <h1>{user.name} <small>{user.age} years old</small></h1>
+              <h1>{article.title}</h1>
             </div>
+          </div>
+
+        </div>
+        <div className="row">
+          <div className="col-sm-12">
+            <p>{article.content}</p>
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-6 col-md-2">
-            <div className="thumbnail">
-              <img src={user.avatar} alt={`${user.name}-avatar`} />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <a href="#/users" className="btn btn-default">
-              <span className="glyphicon glyphicon-arrow-left" aria-hidden="true" /> Back
-            </a>
-          </div>
+          <button
+            className="btn btn-info"
+            role="button"
+            onClick={this.handleEditClick}
+          >編輯</button>
+          <button
+            className="btn btn-warning"
+            role="button"
+            onClick={this.handleDelClick}
+          >刪除</button>
         </div>
       </div>
     );
   }
 }
 
-export default SingleUserPage;
+export default SingleArticlePage;
