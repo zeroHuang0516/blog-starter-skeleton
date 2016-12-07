@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 import path from 'path';
 import express from 'express';
 import webpack from 'webpack';
@@ -12,6 +11,7 @@ import dbConfigFile from './config/config';
 
 const dbConfig = dbConfigFile[process.env.NODE_ENV];
 
+mongoose.Promise = global.Promise;
 mongoose.connect(`mongodb://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}`);
 
 const port = process.env.PORT || 3000;
