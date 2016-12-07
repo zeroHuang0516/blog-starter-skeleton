@@ -105,60 +105,83 @@ class SingleArticlePage extends Component {
     });
   }
 
+  renderTitle = () => {
+    const { isEditing, title } = this.state;
+    if (isEditing) {
+      return (
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="請輸入標題"
+            aria-describedby="article-title"
+            value={title}
+            onChange={this.handleTitleChange}
+          />
+        </div>
+      );
+    }
+    return <h1>{title}</h1>;
+  }
+
+  renderTags = () => {
+    const { isEditing, tags } = this.state;
+    if (isEditing) {
+      return (
+        <TagsInput
+          value={tags}
+          onChange={this.handleTagsChange}
+        />
+      );
+    }
+    return (
+      <TagsInput
+        value={tags}
+        disabled
+      />
+    );
+  }
+
+  renderContent = () => {
+    const { isEditing, content } = this.state;
+    if (isEditing) {
+      return (
+        <ReactQuill
+          theme="snow"
+          value={content}
+          onChange={this.onEditorChange}
+          className={'article-main'}
+        />
+      );
+    }
+    return (
+      <div
+        className="article-main"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }
+
   render() {
-    const { title, content, tags, isEditing } = this.state;
+    const { isEditing } = this.state;
     return (
       <div className="container">
         <div className="row">
           <div className="col-md-12">
             <div className="page-header">
-              {isEditing ?
-                <div className="input-group">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="請輸入標題"
-                    aria-describedby="article-title"
-                    value={title}
-                    onChange={this.handleTitleChange}
-                  />
-                </div> :
-                <h1>{title}</h1>
-              }
+              {this.renderTitle()}
             </div>
           </div>
 
         </div>
         <div className="row">
           <div className="col-md-12">
-            {isEditing ?
-              <TagsInput
-                value={tags}
-                onChange={this.handleTagsChange}
-              />
-              :
-              <TagsInput
-                value={tags}
-                disabled
-              />
-            }
+            {this.renderTags()}
           </div>
         </div>
         <div className="row">
           <div className="col-sm-12">
-            {isEditing ?
-              <ReactQuill
-                theme="snow"
-                value={content}
-                onChange={this.onEditorChange}
-                className={'article-main'}
-              />
-              :
-              <div
-                className="article-main"
-                dangerouslySetInnerHTML={{ __html: content }}
-              />
-            }
+            {this.renderContent()}
           </div>
         </div>
         <div className="row">
@@ -168,14 +191,12 @@ class SingleArticlePage extends Component {
               role="button"
               onClick={this.handleEditClick}
             >{isEditing ? '確認' : '編輯'}</button>
-            {isEditing ?
-              null
-              :
-              <button
-                className="btn btn-warning"
-                role="button"
-                onClick={this.handleDelClick}
-              >刪除</button>
+            {isEditing ? null :
+            <button
+              className="btn btn-warning"
+              role="button"
+              onClick={this.handleDelClick}
+            >刪除</button>
             }
           </div>
         </div>
