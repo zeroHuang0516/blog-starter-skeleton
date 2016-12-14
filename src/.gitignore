@@ -1,7 +1,0 @@
-.DS_Store
-npm-debug.log
-node_modules
-coverage
-lib
-dist
-config/config.js

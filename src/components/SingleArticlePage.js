@@ -1,5 +1,9 @@
 import 'isomorphic-fetch';
 import React, { Component, PropTypes } from 'react';
+import ReactQuil from 'react-quill';
+import TagsInput from 'react-tagsinput';
+import 'react-tagsinput/react-tagsinput.css';
+import 'quill/dist/quill.snow.css';
 
 class SingleArticlePage extends Component {
   static propTypes = {
@@ -13,29 +17,112 @@ class SingleArticlePage extends Component {
       tags: [],
       isEditing: false,
     };
+    this.handleTagsChange = this.handleTagsChange.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
+    this.handleDelClick = this.handleDelClick.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
+    this.handleQuilChange = this.handleQuilChange.bind(this);
+    this.renderTitle = this.renderTitle.bind(this);
+    this.renderTags = this.renderTags.bind(this);
+    this.renderContent = this.renderContent.bind(this);
   }
 
   componentDidMount() {
     // fetch with id
+    const id = this.props.id;
+    fetch('/api/articles/'+id)
+    .then(res => res.json())
+    .then(json => {this.setState({
+      title: json.title,
+      content: json.content,
+      tags: json.tags,
+    });
+  }).catch((err)=>{
+      console.log(err);
+  });
   }
 
   componentDidUpdate() {
     // fetch with id
   }
 
-  handleTagsChange = () => {};
+  handleTagsChange = (tags) => {
+    this.setState({tags:tags,});
+  };
 
-  handleTitleChange = () => {};
+  handleTitleChange = (ele) => {
+    this.setState({title:ele.target.value});
+  };
 
-  handleDelClick = () => {};
+  handleDelClick = () => {
+    const id = this.props.id;
+    const confirm = window.confirm('確定要新增文章嗎？');
+    if (confirm) {
+    fetch('/api/articles/'+id, {method: 'DELETE'})
+    .then(document.location.href = "#/articles").catch((err) => {
+      console.log(err);
+    });
+    }
+  };
 
-  handleEditClick = () => {};
+  handleEditClick = () => {
+    if(!this.state.isEditing){
+      this.setState({isEditing:true,});
+    }
+    else{
+      this.setState({isEditing:false});
+      const id = this.props.id;
+      fetch('/api/articles/'+id,{
+        method:'PUT',
+        headers:{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: this.state.title,
+          content: this.state.content,
+          tags: this.state.tags,
+        }),
+      });
+    }
+  };
 
-  renderTitle = () => {};
+  handleQuilChange = (con) =>{
+    this.setState({content:con,})
+  };
 
-  renderTags = () => {};
+  renderTitle = () => {
+    if(this.state.isEditing){
+      return <input type="text" className="form-control" value={this.state.title} onChange={this.handleTitleChange} placeholder="New Title"></input> 
+    }
+    else{
+      return <h1>{this.state.title}</h1>
+    }
+  };
 
-  renderContent = () => {};
+  renderTags = () => {
+   if(this.state.isEditing){
+      return <TagsInput value={this.state.tags} onChange={this.handleTagsChange}/>;
+    }
+    else {
+      return <div>
+        {this.state.tags.map((tag,index) => <button key={index + 1}
+          type="button">#{tag}</button>)}
+      </div>;
+    }
+  };
+
+
+  renderContent = () => {
+    if(this.state.isEditing){
+      return <ReactQuil theme="snow" value={this.state.content} onChange={this.handleQuilChange}/>;
+      
+    }
+    else{
+      return <div className="jumbotron" dangerouslySetInnerHTML={{__html: this.state.content}}/>;
+      
+    }
+  };
 
   render() {
     const { isEditing } = this.state;
